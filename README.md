@@ -202,8 +202,9 @@ python3 debug_ui.py
 | `No ADB device found` | Check USB Debugging; run `adb kill-server && adb start-server` |
 | Conversation / button not found | Increase `WAIT_MESSAGE_ARRIVE`; run `debug_ui.py` to verify names |
 | Wrong agent name | Check `AGENT_DISPLAY_NAME` with `debug_ui.py` — must match exactly |
-| Samsung device | Set `MESSAGES_PACKAGE` / `MESSAGES_ACTIVITY` to the Samsung values in `config.py` |
+| Samsung Messenger | Set `MESSAGES_PACKAGE` / `MESSAGES_ACTIVITY` to the Samsung values in `config.py` |
 | Screen stays locked | Disable the screen lock on the device |
+| RCS Message not sent | Agent should not be associated with an Application. Ensure you do not reach RCS Text length Limits. |
 | Recording stops after 3 min | ADB limit: `MAX_RECORD_SECONDS` must be ≤ 180 |
 | `type_and_send` types in wrong field | Run `debug_ui.py` and check the `resource-id` of the compose field |
 
