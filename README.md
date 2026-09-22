@@ -1,6 +1,6 @@
-# RCS Video Recorder
+# Vonage RCS Video Recorder
 
-Automated toolset for recording RCS demo videos on an Android device via USB/ADB. Produces a complete screen recording of the Opt-In, Marketing and Opt-Out flows for the Vonage RCS Agent Review process.
+Automated toolset for recording RCS demo videos on an Android device via USB/ADB. Produces a complete screen recording of the Opt-In, Marketing and Opt-Out flows for the RCS Agent Review process.
 
 ---
 
