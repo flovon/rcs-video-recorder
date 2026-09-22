@@ -37,9 +37,6 @@ AGENT_DISPLAY_NAME = "YOUR_AGENT_DISPLAY_NAME"
 # Destination phone number including country code (e.g. "+15551234567")
 TARGET_PHONE = "+1XXXXXXXXXX"
 
-# Publicly reachable HTTPS image URL for the Rich Card (min. 600x400 px)
-MARKETING_IMAGE_URL = "https://your-domain.com/banner.jpg"
-
 # ── Timing (seconds) ──────────────────────────────────────────────────────────
 WAIT_APP_OPEN       = 3   # After launching the Messages app
 WAIT_MESSAGE_ARRIVE = 8   # Time to wait for an incoming message to appear
@@ -60,7 +57,9 @@ OPTIN_TAP_BUTTON = "Yes, sign me up!"
 # ── Marketing Message (Rich Card) ─────────────────────────────────────────────
 MARKETING_TITLE       = "Exclusive offer: 20% off!"
 MARKETING_DESCRIPTION = "Today only: save 20% on all products. Grab your deal now!"
-# MARKETING_IMAGE_URL is defined above
+
+# Publicly reachable HTTPS image URL for the Rich Card (min. 600x400 px)
+MARKETING_IMAGE_URL = "https://your-domain.com/banner.jpg"
 
 MARKETING_BUTTONS = [
     # Button WITH "url" → rendered as a URL-action button (opens browser)
