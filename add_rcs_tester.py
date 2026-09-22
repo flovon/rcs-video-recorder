@@ -116,8 +116,4 @@ if __name__ == "__main__":
     parser.add_argument("--timeout", type=int, default=30,
                         help="Max seconds to wait for the conversation (default: 30)")
     args = parser.parse_args()
-<<<<<<< HEAD
     run(serial_override=args.serial, timeout=args.timeout)
-=======
-    run(serial_override=args.serial, timeout=args.timeout)
->>>>>>> 7e42969 (Lokalen Projektstand sichern)

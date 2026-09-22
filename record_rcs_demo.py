@@ -3,10 +3,7 @@
 record_rcs_demo.py
 ------------------
 Automated RCS demo video recorder for the Vonage RCS Agent Review process.
-<<<<<<< HEAD
-=======
 Uses the Vonage Python SDK v4 with JWT authentication.
->>>>>>> 7e42969 (Lokalen Projektstand sichern)
 
 Flow:
   1. Unlock screen
@@ -26,13 +23,9 @@ import argparse
 import time
 import os
 import datetime
-<<<<<<< HEAD
-import requests
-=======
 
 from vonage import Vonage, Auth
 from vonage_messages import RcsCustom, RcsText
->>>>>>> 7e42969 (Lokalen Projektstand sichern)
 
 import config
 from adb_helper import (
@@ -43,32 +36,6 @@ from adb_helper import (
 from ui_helper import find_element_by_text
 
 
-<<<<<<< HEAD
-# ── Vonage Messages API ───────────────────────────────────────────────────────
-
-def vonage_send_rcs(text=None, suggestions=None, rich_card=None):
-    """Send an RCS message via the Vonage Messages API."""
-    base = {
-        "from": config.VONAGE_FROM_RCS,
-        "to":   config.TARGET_PHONE,
-        "channel": "rcs",
-    }
-
-    if rich_card:
-        def _build_suggestion(b):
-            if b.get("url"):
-                return {"action": {
-                    "text": b["text"],
-                    "postbackData": b["postbackData"],
-                    "openUrlAction": {"url": b["url"]},
-                }}
-            return {"reply": {
-                "text": b["text"],
-                "postbackData": b["postbackData"],
-            }}
-
-        payload = {**base, "message_type": "custom", "custom": {
-=======
 # ── Vonage SDK client (JWT) ───────────────────────────────────────────────────
 
 def _get_vonage_client() -> Vonage:
@@ -121,7 +88,6 @@ def vonage_send_rcs(client: Vonage,
     if rich_card:
         # Standalone Rich Card with mixed button types
         custom_payload = {
->>>>>>> 7e42969 (Lokalen Projektstand sichern)
             "contentMessage": {
                 "richCard": {
                     "standaloneCard": {
@@ -140,35 +106,6 @@ def vonage_send_rcs(client: Vonage,
                     }
                 }
             }
-<<<<<<< HEAD
-        }}
-
-    elif suggestions:
-        payload = {**base, "message_type": "custom", "custom": {
-            "contentMessage": {
-                "text": text,
-                "suggestions": [
-                    {"reply": {"text": s["text"], "postbackData": s["postbackData"]}}
-                    for s in suggestions
-                ],
-            }
-        }}
-
-    else:
-        payload = {**base, "message_type": "text", "text": text}
-
-    resp = requests.post(
-        "https://api.nexmo.com/v1/messages",
-        json=payload,
-        auth=(config.VONAGE_API_KEY, config.VONAGE_API_SECRET),
-        headers={"Content-Type": "application/json", "Accept": "application/json"},
-        timeout=15,
-    )
-    resp.raise_for_status()
-    label = text or (rich_card or {}).get("title", "RichCard")
-    print(f"  [API] Sent: {str(label)[:60]}")
-    return resp.json()
-=======
         }
         message = RcsCustom(
             from_=config.VONAGE_FROM_RCS,
@@ -202,17 +139,12 @@ def vonage_send_rcs(client: Vonage,
     label = text or (rich_card or {}).get("title", "RichCard")
     print(f"  [API] Sent (JWT): {str(label)[:60]}")
     return response
->>>>>>> 7e42969 (Lokalen Projektstand sichern)
 
 
 # ── UI helpers ────────────────────────────────────────────────────────────────
 
-<<<<<<< HEAD
-def wait_and_tap(serial, button_text, timeout=20, interval=2.0) -> bool:
-=======
 def wait_and_tap(serial: str, button_text: str,
                  timeout: int = 20, interval: float = 2.0) -> bool:
->>>>>>> 7e42969 (Lokalen Projektstand sichern)
     """Poll the UI until button_text appears, then tap it."""
     deadline = time.time() + timeout
     while time.time() < deadline:
@@ -228,11 +160,7 @@ def wait_and_tap(serial: str, button_text: str,
     return False
 
 
-<<<<<<< HEAD
-def open_conversation(serial, sender_name, timeout=20) -> bool:
-=======
 def open_conversation(serial: str, sender_name: str, timeout: int = 20) -> bool:
->>>>>>> 7e42969 (Lokalen Projektstand sichern)
     """Open the conversation thread with the given sender name."""
     deadline = time.time() + timeout
     while time.time() < deadline:
@@ -258,14 +186,11 @@ def run_demo(trigger_api: bool = True):
     print("  RCS Demo Video Recorder — Vonage")
     print("=" * 60)
 
-<<<<<<< HEAD
-=======
     # Initialise Vonage SDK client once (JWT is generated on first request)
     client = _get_vonage_client() if trigger_api else None
     if client:
         print(f"[OK] Vonage SDK ready (App ID: {config.VONAGE_APPLICATION_ID})")
 
->>>>>>> 7e42969 (Lokalen Projektstand sichern)
     serial = get_device_serial(config.DEVICE_SERIAL)
     w, h   = get_screen_size(serial)
     print(f"[OK] Device: {serial}  |  Resolution: {w}x{h}")
@@ -287,10 +212,7 @@ def run_demo(trigger_api: bool = True):
         print("\n[4/7] Opt-In flow...")
         if trigger_api:
             vonage_send_rcs(
-<<<<<<< HEAD
-=======
                 client,
->>>>>>> 7e42969 (Lokalen Projektstand sichern)
                 text=config.OPTIN_TEXT,
                 suggestions=config.OPTIN_BUTTONS,
             )
@@ -305,20 +227,13 @@ def run_demo(trigger_api: bool = True):
         print("\n[5/7] Marketing message flow...")
         if trigger_api:
             vonage_send_rcs(
-<<<<<<< HEAD
-=======
                 client,
->>>>>>> 7e42969 (Lokalen Projektstand sichern)
                 rich_card={
                     "title":       config.MARKETING_TITLE,
                     "description": config.MARKETING_DESCRIPTION,
                     "imageUrl":    config.MARKETING_IMAGE_URL,
                     "buttons":     config.MARKETING_BUTTONS,
-<<<<<<< HEAD
-                }
-=======
                 },
->>>>>>> 7e42969 (Lokalen Projektstand sichern)
             )
 
         time.sleep(config.WAIT_MESSAGE_ARRIVE)
@@ -339,16 +254,10 @@ def run_demo(trigger_api: bool = True):
         type_and_send(serial, config.OPTOUT_KEYWORD)
         time.sleep(config.WAIT_MESSAGE_ARRIVE)
 
-<<<<<<< HEAD
-        # Step 2: bot replies with the opt-out message and buttons
-        if trigger_api:
-            vonage_send_rcs(
-=======
         # Step 2: bot replies with the opt-out confirmation message + buttons
         if trigger_api:
             vonage_send_rcs(
                 client,
->>>>>>> 7e42969 (Lokalen Projektstand sichern)
                 text=config.OPTOUT_TEXT,
                 suggestions=config.OPTOUT_BUTTONS,
             )
@@ -357,11 +266,7 @@ def run_demo(trigger_api: bool = True):
         wait_and_tap(serial, config.OPTOUT_TAP_BUTTON, timeout=15)
         time.sleep(config.WAIT_AFTER_TAP)
 
-<<<<<<< HEAD
-        # Short pause so the result is visible in the recording
-=======
         # Short pause so the final state is visible in the recording
->>>>>>> 7e42969 (Lokalen Projektstand sichern)
         time.sleep(3)
 
     finally:
@@ -378,11 +283,7 @@ def run_demo(trigger_api: bool = True):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
-<<<<<<< HEAD
-        description="Automated RCS demo video recorder for Vonage Agent Review"
-=======
         description="Automated RCS demo video recorder — Vonage Agent Review"
->>>>>>> 7e42969 (Lokalen Projektstand sichern)
     )
     parser.add_argument("--trigger",    dest="trigger", action="store_true",  default=True,
                         help="Send messages via Vonage API (default: on)")

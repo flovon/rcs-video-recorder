@@ -23,7 +23,6 @@ def find_element_by_text(xml_content: str, text: str) -> dict | None:
                 return coords
     return None
 
-
 def _parse_bounds(bounds: str) -> dict | None:
     """Convert '[x1,y1][x2,y2]' into a centre-point dict."""
     try:

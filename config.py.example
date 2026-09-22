@@ -9,6 +9,7 @@ MAX_RECORD_SECONDS = 120
 # Messages App
 MESSAGES_PACKAGE = "com.google.android.apps.messaging"
 MESSAGES_ACTIVITY = "com.google.android.apps.messaging.ui.ConversationListActivity"
+
 # Samsung Messages:
 # MESSAGES_PACKAGE = "com.samsung.android.messaging"
 # MESSAGES_ACTIVITY = "com.samsung.android.messaging.ui.ConversationListActivity"
