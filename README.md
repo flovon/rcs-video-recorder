@@ -86,7 +86,6 @@ MESSAGES_ACTIVITY = "com.samsung.android.messaging.ui.ConversationListActivity"
 | `VONAGE_FROM_RCS` | Technical sender ID of the RCS agent (e.g. `mbapi_demo`) |
 | `AGENT_DISPLAY_NAME` | Name as shown in the Messages app — **may differ from the sender ID!** |
 | `TARGET_PHONE` | Destination phone number with country code (e.g. `+15551234567`) |
-| `MARKETING_IMAGE_URL` | Publicly reachable HTTPS image URL for the Rich Card (min. 600×400 px) |
 
 > **Finding `AGENT_DISPLAY_NAME`:** run `python3 debug_ui.py` with the Messages app open — all visible UI texts will be printed.
 
@@ -108,6 +107,7 @@ OPTIN_TAP_BUTTON = "Yes, sign me up!"   # This button is tapped automatically
 ```python
 MARKETING_TITLE       = "Exclusive offer: 20% off!"
 MARKETING_DESCRIPTION = "Today only: save 20% on all products."
+MARKETING_IMAGE_URL = "Publicly reachable HTTPS image URL for the Rich Card (min. 600×400 px) in 16:9 Format (recommended)"
 MARKETING_BUTTONS     = [
     {"text": "Learn more",    "postbackData": "LEARN_MORE", "url": "https://..."},  # URL button
     {"text": "Decline offer", "postbackData": "DECLINE"},                           # Quick Reply
