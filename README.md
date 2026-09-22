@@ -1,6 +1,8 @@
-# Vonage RCS Video Recorder
+# RCS Video Recorder
 
-Automated toolset for recording RCS demo videos on an Android device via USB/ADB. Produces a complete screen recording of the Opt-In, Marketing and Opt-Out flows for the RCS Agent Review process.
+Automated toolset for recording RCS demo videos on an Android device via USB/ADB. Produces a complete screen recording of the Opt-In, Marketing and Opt-Out flows for the Vonage RCS Agent Review process.
+
+Authenticates against the Vonage Messages API using **JWT** via the official **Vonage Python SDK v4**.
 
 ---
 
@@ -9,7 +11,7 @@ Automated toolset for recording RCS demo videos on an Android device via USB/ADB
 - Android device with **USB Debugging** enabled
 - **ADB** installed on your Mac/PC
 - **Python 3.9+**
-- Vonage account with an RCS-capable agent
+- Vonage account with an RCS-capable agent and a **Vonage Application** configured
 
 ---
 
@@ -24,13 +26,25 @@ python3 -m venv venv
 source venv/bin/activate
 
 # 3. Install dependencies
-pip install requests
+pip install -r requirements.txt
 ```
 
 > The `venv` must be re-activated in every new terminal window:
 > ```bash
 > source venv/bin/activate
 > ```
+
+---
+
+## Vonage Application Setup
+
+JWT authentication requires a **Vonage Application** with the Messages capability enabled.
+
+1. Go to [dashboard.nexmo.com/applications](https://dashboard.nexmo.com/applications) → **Create a new application**
+2. Enable the **Messages** capability
+3. Download the generated **`private.key`** file and place it in the project root
+4. Copy the **Application ID** shown on the application page
+5. Link your RCS sender ID to the application under **Link external accounts**
 
 ---
 
@@ -56,7 +70,7 @@ pip install requests
 
 ## Configuration
 
-All settings live in `config.py`. Fill it in before running any script.
+All settings live in `config.py`. Use the `config.py.example` and copy it to `config.py` Fill it in before running any script.
 
 ### Device & Paths
 
@@ -77,17 +91,40 @@ MESSAGES_PACKAGE  = "com.samsung.android.messaging"
 MESSAGES_ACTIVITY = "com.samsung.android.messaging.ui.ConversationListActivity"
 ```
 
-### Vonage API
+### Vonage API (JWT)
 
 | Variable | Description |
 |---|---|
-| `VONAGE_API_KEY` | Vonage API Key |
-| `VONAGE_API_SECRET` | Vonage API Secret |
+| `VONAGE_APPLICATION_ID` | Application ID from the Vonage Dashboard |
+| `VONAGE_PRIVATE_KEY_PATH` | Path to `private.key` **or** inline PEM string |
 | `VONAGE_FROM_RCS` | Technical sender ID of the RCS agent (e.g. `mbapi_demo`) |
 | `AGENT_DISPLAY_NAME` | Name as shown in the Messages app — **may differ from the sender ID!** |
 | `TARGET_PHONE` | Destination phone number with country code (e.g. `+15551234567`) |
 
-> **Finding `AGENT_DISPLAY_NAME`:** run `python3 debug_ui.py` with the Messages app open — all visible UI texts will be printed.
+
+```python
+# File path (recommended for local use):
+VONAGE_PRIVATE_KEY_PATH = "./private.key"
+
+# Inline PEM string (useful for CI/CD):
+VONAGE_PRIVATE_KEY_PATH = "-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----"
+```
+
+> **Finding `AGENT_DISPLAY_NAME`:** run `python3 debug_ui.py` with the Messages app open.
+
+### How JWT authentication works
+
+The Vonage SDK automatically generates a signed JWT from your `VONAGE_APPLICATION_ID` and `VONAGE_PRIVATE_KEY_PATH` on every request — no manual token management needed. The private key never leaves your machine.
+
+```
+VONAGE_APPLICATION_ID + private.key
+         ↓  (vonage SDK)
+    Signed JWT (RS256)
+         ↓
+  Authorization: Bearer <token>
+         ↓
+  Vonage Messages API
+```
 
 ### Demo Content (fully customisable)
 
@@ -100,14 +137,14 @@ OPTIN_BUTTONS    = [
     {"text": "Yes, sign me up!", "postbackData": "OPTIN_YES"},
     {"text": "No thanks",        "postbackData": "OPTIN_NO"},
 ]
-OPTIN_TAP_BUTTON = "Yes, sign me up!"   # This button is tapped automatically
+OPTIN_TAP_BUTTON = "Yes, sign me up!"
 ```
 
 **Marketing message (Rich Card):**
 ```python
 MARKETING_TITLE       = "Exclusive offer: 20% off!"
 MARKETING_DESCRIPTION = "Today only: save 20% on all products."
-MARKETING_IMAGE_URL = "Publicly reachable HTTPS image URL for the Rich Card (min. 600×400 px) in 16:9 Format (recommended)"
+MARKETING_IMAGE_URL = "Publicly reachable HTTPS image URL for the Rich Card (min. 600×400 px)"
 MARKETING_BUTTONS     = [
     {"text": "Learn more",    "postbackData": "LEARN_MORE", "url": "https://..."},  # URL button
     {"text": "Decline offer", "postbackData": "DECLINE"},                           # Quick Reply
@@ -115,26 +152,18 @@ MARKETING_BUTTONS     = [
 MARKETING_TAP_BUTTON  = "Learn more"
 ```
 
-> Buttons **with** `"url"` are rendered as URL-action buttons (open browser).
-> Buttons **without** `"url"` are rendered as quick-reply buttons.
+> Buttons **with** `"url"` → URL-action button (opens browser).
+> Buttons **without** `"url"` → quick-reply button.
 
 **Opt-Out flow:**
 ```python
-OPTOUT_KEYWORD    = "stop"              # Typed and sent from the phone
+OPTOUT_KEYWORD    = "stop"          # Typed and sent from the phone
 OPTOUT_TEXT       = "Would you like to unsubscribe?"
 OPTOUT_BUTTONS    = [
     {"text": "Unsubscribe",     "postbackData": "OPTOUT_YES"},
     {"text": "Stay subscribed", "postbackData": "OPTOUT_NO"},
 ]
 OPTOUT_TAP_BUTTON = "Unsubscribe"
-```
-
-### Timing
-
-```python
-WAIT_APP_OPEN       = 3   # Seconds after launching the app
-WAIT_MESSAGE_ARRIVE = 8   # Seconds to wait for an incoming message
-WAIT_AFTER_TAP      = 3   # Seconds after tapping a button
 ```
 
 ---
@@ -146,7 +175,7 @@ WAIT_AFTER_TAP      = 3   # Seconds after tapping a button
 Records the complete Opt-In → Marketing → Opt-Out flow.
 
 ```bash
-# Send API messages + record + interact:
+# Send API messages (JWT) + record + interact:
 python3 record_rcs_demo.py --trigger
 
 # Record only (messages triggered externally):
@@ -160,8 +189,8 @@ python3 record_rcs_demo.py --no-trigger
 | 1 | Unlock screen |
 | 2 | Open Messages app |
 | 3 | Start screen recording |
-| 4 | **Opt-In:** send message with reply buttons → tap configured button |
-| 5 | **Marketing:** send Rich Card with URL + quick-reply button → tap URL button → return to app |
+| 4 | **Opt-In:** send `RcsCustom` with reply buttons → tap configured button |
+| 5 | **Marketing:** send `RcsCustom` Rich Card with URL + quick-reply button → tap URL button → return to app |
 | 6 | **Opt-Out:** type `OPTOUT_KEYWORD` from phone → bot replies → tap Unsubscribe button |
 | 7 | Stop recording → pull video to computer → kill Messages app |
 
@@ -202,10 +231,10 @@ python3 debug_ui.py
 | `No ADB device found` | Check USB Debugging; run `adb kill-server && adb start-server` |
 | Conversation / button not found | Increase `WAIT_MESSAGE_ARRIVE`; run `debug_ui.py` to verify names |
 | Wrong agent name | Check `AGENT_DISPLAY_NAME` with `debug_ui.py` — must match exactly |
-| Samsung Messenger | Set `MESSAGES_PACKAGE` / `MESSAGES_ACTIVITY` to the Samsung values in `config.py` |
+| Samsung device | Set `MESSAGES_PACKAGE` / `MESSAGES_ACTIVITY` to the Samsung values |
 | Screen stays locked | Disable the screen lock on the device |
-| RCS Message not sent | Agent should not be associated with an Application. Ensure you do not reach RCS Text length Limits. |
 | Recording stops after 3 min | ADB limit: `MAX_RECORD_SECONDS` must be ≤ 180 |
+| `AuthenticationError` | Verify `VONAGE_APPLICATION_ID` and that `private.key` matches the application |
 | `type_and_send` types in wrong field | Run `debug_ui.py` and check the `resource-id` of the compose field |
 
 **Inspect the UI dump manually:**
