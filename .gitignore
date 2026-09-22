@@ -1,0 +1,14 @@
+# Private credentials and local configuration
+config.py
+**/config.py
+private.key
+**/private.key
+
+# Local Python environments and generated files
+venv/
+**/venv/
+__pycache__/
+**/__pycache__/
+output/
+**/output/
+rcs-video-recorder/

@@ -1,0 +1,3 @@
+# RCS Video Recorder — Python dependencies
+vonage>=4.0.0       # Vonage Python SDK v4 (JWT auth + Messages API)
+requests>=2.31.0    # HTTP fallback (used only if SDK unavailable)

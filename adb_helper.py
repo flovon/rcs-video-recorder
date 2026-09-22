@@ -196,4 +196,8 @@ def type_and_send(serial: str, text: str):
         _adb(["-s", serial, "shell", "input", "keyevent", "KEYCODE_ENTER"])
         print("  [type] Sent via KEYCODE_ENTER (fallback)")
 
+<<<<<<< HEAD
     time.sleep(1)
+=======
+    time.sleep(1)
+>>>>>>> 7e42969 (Lokalen Projektstand sichern)
