@@ -28,7 +28,7 @@ from adb_helper import (
 from ui_helper import find_element_by_text
 
 # Adjust these if the names shown in the Messages app differ
-RBM_AGENT_NAME  = "RBM Tester Manager"
+RBM_AGENT_NAME  = "RBM Tester Management"
 RBM_BUTTON_TEXT = "Make me a tester"
 
 
