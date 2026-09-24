@@ -12,3 +12,4 @@ __pycache__/
 output/
 **/output/
 rcs-video-recorder/
+.DS_Store
