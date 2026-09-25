@@ -71,12 +71,14 @@ def stop_screenrecord(stop_event, thread, timeout: int = 5):
 
 
 def pull_video(serial: str, remote_path: str, local_dir: str) -> str:
-    """Pull the recorded video from the device to the local machine."""
+    """Pull the recorded video and remove it from the device."""
     os.makedirs(local_dir, exist_ok=True)
     filename  = os.path.basename(remote_path)
     local_path = os.path.join(local_dir, filename)
     _adb(["-s", serial, "pull", remote_path, local_path])
+    _adb(["-s", serial, "shell", "rm", remote_path])
     print(f"[pull] Video saved: {local_path}")
+    print(f"[pull] Removed remote video: {remote_path}")
     return local_path
 
 
