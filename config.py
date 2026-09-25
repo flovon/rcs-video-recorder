@@ -15,13 +15,13 @@ MESSAGES_ACTIVITY = "com.google.android.apps.messaging.ui.ConversationListActivi
 # MESSAGES_ACTIVITY = "com.samsung.android.messaging.ui.ConversationListActivity"
 
 # Vonage API
-VONAGE_APPLICATION_ID = "ac01bba6-cc6d-476b-9546-5d7dfcd3c716"
+VONAGE_APPLICATION_ID = "your-vonage-application-id"
 VONAGE_PRIVATE_KEY_PATH = "./private.key"
-VONAGE_FROM_RCS = "mbapi_demo"
-AGENT_DISPLAY_NAME = "Magenta Business API DEMO"
+VONAGE_FROM_RCS = "your-rcs-sender-id"
+AGENT_DISPLAY_NAME = "Your RCS Agent"
 
 # Country code plus phone number, without a leading '+'
-TARGET_PHONE = "4915568421774"
+TARGET_PHONE = "491234567890"
 
 # Delays in seconds
 WAIT_APP_OPEN = 3
@@ -29,7 +29,7 @@ WAIT_MESSAGE_ARRIVE = 8
 WAIT_AFTER_TAP = 3
 WAIT_SCROLL = 1
 
-# OPT-IN flow
+# OPT-IN Flow
 OPTIN_TEXT = "Hallo! Möchten Sie exklusive Angebote und Updates von uns erhalten? Sie haben jederzeit die möglichket der Abmeldung mit dem senden von 'STOP'."
 
 OPTIN_BUTTONS = [
@@ -37,34 +37,34 @@ OPTIN_BUTTONS = [
     {"text": "Nein danke",         "postbackData": "OPTIN_NO"},
 ]
 
-# Which button should be tapped automatically?
+# Welcher Button soll automatisch getippt werden?
 OPTIN_TAP_BUTTON = "Ja, ich bin dabei!"
 
-# ── Marketing message ─────────────────────────────────────────────────────────
+# ── Marketing-Nachricht ───────────────────────────────────────────────────────
 MARKETING_TITLE       = "Exklusiv fuer Sie: 20% Rabatt!"
 MARKETING_DESCRIPTION = "Nur heute: Sparen Sie 20% auf alle Produkte außer Tiernahrung. Jetzt Angebot sichern!"
 MARKETING_IMAGE_URL  = "https://www.froelichundkaufmann.de/out/pictures/ddmedia/fuk_kategorie_header_20-prozent_1.jpg"
 
 MARKETING_BUTTONS = [
-    # With "url" → URL action button (opens browser)
+    # Mit "url" → URL-Action-Button (oeffnet Browser)
     {"text": "Mehr erfahren",    "postbackData": "LEARN_MORE", "url": "https://www.vonage.com"},
-    # Without "url" → quick reply button
+    # Ohne "url" → Quick-Reply-Button
     {"text": "Angebot ablehnen", "postbackData": "DECLINE"},
 ]
 
-# Which button should be tapped automatically?
+# Welcher Button soll automatisch getippt werden?
 MARKETING_TAP_BUTTON = "Mehr erfahren"
 
-# ── OPT-OUT flow ───────────────────────────────────────────────────────────────
-# Keyword that the phone sends first into the chat to trigger opt-out
+# ── OPT-OUT Flow ─────────────────────────────────────────────────────────────
+# Keyword das das Telefon zuerst in den Chat SENDET (loest den Opt-Out aus)
 OPTOUT_KEYWORD = "stop"
 
-OPTOUT_TEXT = "Möchten Sie sich abmelden und keine Nachrichten mehr erhalten? Sie können sich jederzeit erneut anmelden, indem Sie 'START' senden."
+OPTOUT_TEXT = "Möchten Sie sich abmelden und keine Nachrichten mehr erhalten? Sie können sich jederzeit wieder anmelden, indem Sie 'START' senden."
 
 OPTOUT_BUTTONS = [
     {"text": "Abmelden",           "postbackData": "OPTOUT_YES"},
     {"text": "Angemeldet bleiben", "postbackData": "OPTOUT_NO"},
 ]
 
-# Which button should be tapped automatically?
+# Welcher Button soll automatisch getippt werden?
 OPTOUT_TAP_BUTTON = "Abmelden"
